@@ -417,6 +417,7 @@ void reds_update_stat_value(uint32_t value)
 #endif
 
 
+
 void reds_register_channel(RedChannel *channel)
 {
     spice_assert(reds);
