@@ -11408,6 +11408,22 @@ static void set_monitors_config_to_primary(RedWorker *worker)
     head->y = 0;
 }
 
+/*
+主要做了三件事情：
+
+1.   调用red_create_surface()创建primary surface(通过调用PIXMAN的API完成)并发送SPICE_SURFACE_FLAGS_PRIMARY消息给spice client，由spice client的Display_channel.cpp处理完成;
+
+2.   调用red_worker_push_monitors_config
+
+发送监视器的配置给spice client;
+
+3.   调用red_channel_pipes_add_type
+
+发送PIPE_ITEM_TYPE_CURSOR_INIT消息给spice client，spice client调用Cursor_channel.cpp的handle_init进行光标的初始化处理。
+
+
+*/
+
 static void dev_create_primary_surface(RedWorker *worker, uint32_t surface_id,
                                        QXLDevSurfaceCreate surface)
 {
@@ -12277,6 +12293,8 @@ SPICE_GNUC_NORETURN void *red_worker_main(void *arg)
                 if (worker->poll_fds[i].revents & POLLOUT) {
                     events |= SPICE_WATCH_EVENT_WRITE;
                 }
+				
+				//dispatcher 交互
                 worker->watches[i].watch_func(worker->poll_fds[i].fd, events,
                                         worker->watches[i].watch_func_opaque);
             }
@@ -12290,6 +12308,7 @@ SPICE_GNUC_NORETURN void *red_worker_main(void *arg)
             }
         }
 
+		//QXL Device 交互
         if (worker->running) {
             int ring_is_empty;
             red_process_cursor(worker, MAX_PIPE_SIZE, &ring_is_empty);
