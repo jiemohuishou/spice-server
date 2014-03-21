@@ -9219,6 +9219,9 @@ static void red_marshall_stream_activate_report(RedChannelClient *rcc,
     spice_marshall_msg_display_stream_activate_report(base_marshaller, &msg);
 }
 
+/*
+	display channel 向client发送消息
+*/
 static void display_channel_send_item(RedChannelClient *rcc, PipeItem *pipe_item)
 {
     SpiceMarshaller *m = red_channel_client_get_marshaller(rcc);
@@ -9271,7 +9274,7 @@ static void display_channel_send_item(RedChannelClient *rcc, PipeItem *pipe_item
         red_reset_palette_cache(dcc);
         red_marshall_verb(rcc, SPICE_MSG_DISPLAY_INVAL_ALL_PALETTES);
         break;
-    case PIPE_ITEM_TYPE_CREATE_SURFACE: {
+    case PIPE_ITEM_TYPE_CREATE_SURFACE: {	// 创建surface，在这里没有发送
         SurfaceCreateItem *surface_create = SPICE_CONTAINEROF(pipe_item, SurfaceCreateItem,
                                                               pipe_item);
         red_marshall_surface_create(rcc, m, &surface_create->surface_create);
@@ -9304,6 +9307,7 @@ static void display_channel_send_item(RedChannelClient *rcc, PipeItem *pipe_item
 
     // a message is pending
     if (red_channel_client_send_message_pending(rcc)) {
+		// 这里是发送数据
         display_begin_send_message(rcc);
     }
 }

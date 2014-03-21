@@ -136,6 +136,16 @@
  * fields through their offsets.
  */
 
+/*
+ *功能
+
+ *该宏用于求结构体中一个成员在该结构体中的偏移量。
+ *在msdn上，该宏被写作：
+ *size_t offsetof( structName, memberName );
+ *第一个参数是结构体的名字，第二个参数是结构体成员的名字。该宏返回结构体structName中成员memberName的偏移量。偏移量是size_t类型的。
+
+ */
+
 #if defined(__GNUC__)  && __GNUC__ >= 4
 #  define SPICE_OFFSETOF(struct_type, member) \
     ((long) offsetof (struct_type, member))
@@ -144,6 +154,8 @@
     ((long) ((uint8_t*) &((struct_type*) 0)->member))
 #endif
 
+/*	SurfaceCreateItem *surface_create = SPICE_CONTAINEROF(pipe_item, SurfaceCreateItem,
+                                                              pipe_item)	*/
 #define SPICE_CONTAINEROF(ptr, struct_type, member) \
     ((struct_type *)((uint8_t *)(ptr) - SPICE_OFFSETOF(struct_type, member)))
 

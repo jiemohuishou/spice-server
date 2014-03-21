@@ -339,6 +339,7 @@ static void red_peer_handle_outgoing(RedsStream *stream, OutgoingHandler *handle
     }
 
     for (;;) {
+		//	handler->cb->prepare is red_channel_client_peer_prepare_out_msg
         handler->cb->prepare(handler->opaque, handler->vec, &handler->vec_size, handler->pos);
         n = reds_stream_writev(stream, handler->vec, handler->vec_size);
         if (n == -1) {

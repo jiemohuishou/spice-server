@@ -4582,6 +4582,7 @@ ssize_t reds_stream_writev(RedsStream *s, const struct iovec *iov, int iovcnt)
     ssize_t ret = 0;
 
     if (s->writev != NULL) {
+		//	s->writev is stream_writev_cb
         return s->writev(s, iov, iovcnt);
     }
 
