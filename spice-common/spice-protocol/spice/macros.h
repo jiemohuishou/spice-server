@@ -156,6 +156,8 @@
 
 /*	SurfaceCreateItem *surface_create = SPICE_CONTAINEROF(pipe_item, SurfaceCreateItem,
                                                               pipe_item)	*/
+
+//  找到结构体的头部
 #define SPICE_CONTAINEROF(ptr, struct_type, member) \
     ((struct_type *)((uint8_t *)(ptr) - SPICE_OFFSETOF(struct_type, member)))
 
