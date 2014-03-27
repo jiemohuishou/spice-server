@@ -9237,7 +9237,7 @@ static void display_channel_send_item(RedChannelClient *rcc, PipeItem *pipe_item
     case PIPE_ITEM_TYPE_INVAL_ONE:
         red_marshall_inval(rcc, m, (CacheItem *)pipe_item);
         break;
-    case PIPE_ITEM_TYPE_STREAM_CREATE: {
+    case PIPE_ITEM_TYPE_STREAM_CREATE: { //   The server side begin create stream.
         StreamAgent *agent = SPICE_CONTAINEROF(pipe_item, StreamAgent, create_item);
         red_display_marshall_stream_start(rcc, m, agent);
         break;
