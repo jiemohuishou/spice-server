@@ -8566,7 +8566,7 @@ static int encode_frame(DisplayChannelClient *dcc, const SpiceRect *src,
     return TRUE;
 }
 
-//处理视频
+//handle video
 static inline int red_marshall_stream_data(RedChannelClient *rcc,
                   SpiceMarshaller *base_marshaller, Drawable *drawable)
 {
@@ -12299,7 +12299,7 @@ SPICE_GNUC_NORETURN void *red_worker_main(void *arg)
                     events |= SPICE_WATCH_EVENT_WRITE;
                 }
 				
-				//dispatcher 交互
+				//dispatcher communication  watch_func -> handle_dev_input
                 worker->watches[i].watch_func(worker->poll_fds[i].fd, events,
                                         worker->watches[i].watch_func_opaque);
             }
@@ -12313,13 +12313,13 @@ SPICE_GNUC_NORETURN void *red_worker_main(void *arg)
             }
         }
 
-		//QXL Device 交互
+		//QXL Device communication
         if (worker->running) {
             int ring_is_empty;
             red_process_cursor(worker, MAX_PIPE_SIZE, &ring_is_empty);
             red_process_commands(worker, MAX_PIPE_SIZE, &ring_is_empty);
         }
-        red_push(worker);
+        red_push(worker);	//send data and video to client
     }
     abort();
 }

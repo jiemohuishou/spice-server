@@ -565,6 +565,7 @@ static void red_channel_client_send_item(RedChannelClient *rcc, PipeItem *item)
             handled = FALSE;
     }
     if (!handled) {
+		// if display channel channel_cbs.send_item -> display_channel_send_item
         rcc->channel->channel_cbs.send_item(rcc, item);
     }
 }

@@ -135,6 +135,8 @@ static int dispatcher_handle_single_read(Dispatcher *dispatcher)
         /* TODO: close socketpair? */
         return 0;
     }
+	
+	// msg->handler regitster by msg[type] in register_callbacks(red_worker.c)
     if (msg->handler) {
         msg->handler(dispatcher->opaque, (void *)payload);
     } else {
