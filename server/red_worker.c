@@ -6749,7 +6749,7 @@ typedef enum {
 /* if the number of times fill_bits can be called per one qxl_drawable increases -
    MAX_LZ_DRAWABLE_INSTANCES must be increased as well */
 
-//做相应的图片、视频压缩 
+// do image or video compress 
 static FillBitsType fill_bits(DisplayChannelClient *dcc, SpiceMarshaller *m,
                               SpiceImage *simage, Drawable *drawable, int can_lossy)
 {
