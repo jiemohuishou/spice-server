@@ -278,6 +278,7 @@ static void init_mem_destination(j_compress_ptr cinfo)
 {
 }
 
+// 将outsize从初始值(32768) 改为编码后的jpg图片的大小
 static boolean empty_mem_output_buffer(j_compress_ptr cinfo)
 {
   size_t nextsize;
@@ -303,6 +304,7 @@ static boolean empty_mem_output_buffer(j_compress_ptr cinfo)
 
   return TRUE;
 }
+
 
 static void term_mem_destination(j_compress_ptr cinfo)
 {
@@ -344,8 +346,8 @@ spice_jpeg_mem_dest(j_compress_ptr cinfo,
   dest->pub.init_destination = init_mem_destination;
   dest->pub.empty_output_buffer = empty_mem_output_buffer;
   dest->pub.term_destination = term_mem_destination;
-  dest->outbuffer = outbuffer;
-  dest->outsize = outsize;
+  dest->outbuffer = outbuffer;	// &dcc->send_data.stream_outbuf
+  dest->outsize = outsize;	//&dcc->send_data.stream_outbuf_size
   if (*outbuffer == NULL || *outsize == 0) {
     /* Allocate initial buffer */
     *outbuffer = malloc(OUTPUT_BUF_SIZE);
@@ -354,8 +356,8 @@ spice_jpeg_mem_dest(j_compress_ptr cinfo,
     *outsize = OUTPUT_BUF_SIZE;
   }
 
-  dest->pub.next_output_byte = dest->buffer = *outbuffer;
-  dest->pub.free_in_buffer = dest->bufsize = *outsize;
+  dest->pub.next_output_byte = dest->buffer = *outbuffer;	//指向dcc->send_data.stream_outbuf 
+  dest->pub.free_in_buffer = dest->bufsize = *outsize;	//dcc->send_data.stream_outbuf 中空闲的大小
 }
 /* end of code from libjpeg */
 

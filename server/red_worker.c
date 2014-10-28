@@ -5167,7 +5167,8 @@ static int red_process_commands(RedWorker *worker, uint32_t max_pipe_size, int *
     while (!display_is_connected(worker) ||
            // TODO: change to average pipe size?
            red_channel_min_pipe_size(&worker->display_channel->common.base) <= max_pipe_size) {
-        if (!worker->qxl->st->qif->get_command(worker->qxl, &ext_cmd)) {
+		// worker->qxl->st->qif->get_command->interface_get_command
+		if (!worker->qxl->st->qif->get_command(worker->qxl, &ext_cmd)) {
             *ring_is_empty = TRUE;;
             if (worker->repoll_cmd_ring < CMD_RING_POLL_RETRIES) {
                 worker->repoll_cmd_ring++;
@@ -8625,7 +8626,7 @@ static inline int red_marshall_stream_data(RedChannelClient *rcc,
     frame_mm_time =  drawable->red_drawable->mm_time ?
                         drawable->red_drawable->mm_time :
                         reds_get_mm_time();
-    outbuf_size = dcc->send_data.stream_outbuf_size;
+    outbuf_size = dcc->send_data.stream_outbuf_size;	// first is 32768
     ret = mjpeg_encoder_start_frame(agent->mjpeg_encoder, image->u.bitmap.format,
                                     width, height,
                                     &dcc->send_data.stream_outbuf,
@@ -8651,7 +8652,7 @@ static inline int red_marshall_stream_data(RedChannelClient *rcc,
                       &image->u.bitmap, stream)) {
         return FALSE;
     }
-    n = mjpeg_encoder_end_frame(agent->mjpeg_encoder);
+    n = mjpeg_encoder_end_frame(agent->mjpeg_encoder);	// n是jpeg图片的大小
     dcc->send_data.stream_outbuf_size = outbuf_size;
 
     if (!drawable->sized_stream) {

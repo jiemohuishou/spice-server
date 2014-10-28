@@ -238,7 +238,7 @@ static void red_peer_handle_incoming(RedsStream *stream, IncomingHandler *handle
                                           handler->header.data + handler->header_pos,
                                           handler->header.header_size - handler->header_pos);
             if (bytes_read == -1) {
-                handler->cb->on_error(handler->opaque);
+                handler->cb->on_error(handler->opaque);	//red_channel_client_default_peer_on_error
                 return;
             }
             handler->header_pos += bytes_read;
@@ -1460,7 +1460,8 @@ void red_channel_client_begin_send_message(RedChannelClient *rcc)
     SpiceMarshaller *m = rcc->send_data.marshaller;
 
     // TODO - better check: type in channel_allowed_types. Better: type in channel_allowed_types(channel_state)
-    if (rcc->send_data.header.get_msg_type(&rcc->send_data.header) == 0) {
+	// get_msg_type -> mini_header_get_msg_type
+	if (rcc->send_data.header.get_msg_type(&rcc->send_data.header) == 0) {
         spice_printerr("BUG: header->type == 0");
         return;
     }
@@ -1470,6 +1471,7 @@ void red_channel_client_begin_send_message(RedChannelClient *rcc)
 
     spice_marshaller_flush(m);
     rcc->send_data.size = spice_marshaller_get_total_size(m);
+	// set_msg_size -> mini_header_set_msg_size
     rcc->send_data.header.set_msg_size(&rcc->send_data.header,
                                        rcc->send_data.size - rcc->send_data.header.header_size);
     rcc->ack_data.messages_window++;

@@ -216,8 +216,8 @@ int jpeg_encode(JpegEncoderContext *jpeg, int quality, JpegEncoderImageType type
     case JPEG_IMAGE_TYPE_RGB16:
         enc->cur_image.convert_line_to_RGB24 = convert_RGB16_to_RGB24;
         break;
-    case JPEG_IMAGE_TYPE_RGB24:
-        enc->cur_image.convert_line_to_RGB24 = convert_RGB24_to_RGB24;
+    case JPEG_IMAGE_TYPE_RGB24:	//xx
+        enc->cur_image.convert_line_to_RGB24 = convert_RGB24_to_RGB24; //xx
         break;
     case JPEG_IMAGE_TYPE_BGR24:
         enc->cur_image.convert_line_to_RGB24 = convert_BGR24_to_RGB24;

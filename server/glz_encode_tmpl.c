@@ -543,7 +543,7 @@ static void FNAME(compress)(Encoder *encoder)
     printf("copy, copy");
 #endif
     // compressing the first segment
-    FNAME(compress_seg)(encoder, seg_id, ip, 2);
+    FNAME(compress_seg)(encoder, seg_id, ip, 2);	// glz_rgb32_compress_seg(269)
 
     // compressing the next segments
     for (seg_id = dict->window.segs[seg_id].next;
